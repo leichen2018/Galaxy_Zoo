@@ -1,0 +1,11 @@
+*~
+data
+models/*
+shits/*
+wrongs/*
+wrongs
+*.pyc
+*.pth
+*.csv
+*.txt
+*.swp
