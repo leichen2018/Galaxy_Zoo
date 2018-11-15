@@ -1,0 +1,16 @@
+name: galaxy1
+dependencies:
+- python==3.7
+- numpy 
+- pip:
+        - opencv-python
+        - torch
+        - tqdm 
+        - sklearn
+        - torchnet
+        - torchvision
+        - pandas # >= 0.23
+        - scipy #>= 0.13, < 0.17
+          #- nolearn == 0.5b1
+          #- scipy #>= 0.13, < 0.17
+          #- scikit-learn #>= 0.17, < 0.18

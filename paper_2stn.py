@@ -4,7 +4,7 @@ import torch.nn.functional as F
 import torchvision.transforms as transforms
 import math
 
-nclasses = 43 # GTSRB as 43 classes
+nclasses = 37 # GTSRB as 43 classes
 
 class Net(nn.Module):
     def __init__(self, no_dp=False,p=0.5):
@@ -128,4 +128,5 @@ class Net(nn.Module):
         if not self.no_dp:
            x = F.dropout(x, p =self.p,  training=self.training)
         x = self.fc2(x)
-        return F.log_softmax(x)
+        #return F.log_softmax(x)
+        return x

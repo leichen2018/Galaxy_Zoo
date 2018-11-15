@@ -48,27 +48,31 @@ class GalaxyZooDataset(data.Dataset):
         except:
             print('Error in stacking metas!')
         meta['prob']      = torch.stack(meta['prob'])
+        meta['name']      = torch.stack(meta['name'])
 
     def collate(self, batch):
         meta = {}
         for item in batch:
             self._list_append(meta, 'image', item['image'])
             self._list_append(meta, 'prob', item['prob'])
+            self._list_append(meta, 'name', item['name'])
         self._meta_stack(meta)
         return meta
 
 
-    def _meta(self, meta, image, prob):
+    def _meta(self, meta, name, image, prob):
 
         def meta_set(meta, key, val):
             meta[key] = val
 
         meta_set(meta, 'image', image)
+        meta_set(meta, 'name', torch.Tensor([name]))
         meta_set(meta, 'prob', prob)
 
     def __getitem__(self, index):
         meta = {}
         pic = ''
+        name = 0
 
         if(self.train):
             name = self.training_keys[index]
@@ -77,22 +81,24 @@ class GalaxyZooDataset(data.Dataset):
         else:
             name = self.test_keys[index]
             pic  = self.test_set[name]
-            prob = np.asarray([0]) 
+            prob = torch.Tensor([0]) 
 
-        #try:
-        print(pic)
-        image = cv2.imread(pic)
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        image = Image.fromarray(image)
-        image = self.transform(image)
-        #except:
-        #    print('Image reading error at ', pic[:])
+        try:
+            image = cv2.imread(pic)
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+            image = Image.fromarray(image)
+            image = self.transform(image)
+        except:
+            print('Error in loading image ', pic)
 
-        self._meta(meta, image, prob)
+        self._meta(meta, name, image, prob)
         return meta
 
     def __len__(self):
-        return self.training_set.__len__()
+        if self.train:
+            return self.training_set.__len__()
+        else:
+            return self.test_set.__len__()
 
 if __name__ == '__main__':
     import torchvision.transforms as transforms
@@ -107,17 +113,15 @@ if __name__ == '__main__':
                                     #transforms.Normalize(mean=imagenet_mean, std=imagenet_std)
                                     ])
 
-    train_data = GalaxyZooDataset(train=True, transform=train_transform)
-    train_loader = DataLoader(train_data, batch_size=1, shuffle=True,
-                                  num_workers=36, pin_memory=True, collate_fn=train_data.collate)
+    train_data = GalaxyZooDataset(train=False, transform=train_transform)
+    train_loader = DataLoader(train_data, batch_size=64, shuffle=False,
+                                  num_workers=8, pin_memory=True, collate_fn=train_data.collate)
     import cv2
+    print(len(train_loader))
     for batch_idx, meta in enumerate(train_loader):
-        im = meta['image'][0][:,:,:].numpy()
-        im = im*255.
-        im = np.transpose(im, (1, 2, 0))
-        im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB).astype(np.float32)
-        im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB).astype(np.float32)
-
-        cv2.imwrite('try.jpg', im)
-        break
-        print(Done)
+        try:
+            print('Nice a there is no error', meta['image'].shape, meta['prob'].shape, batch_idx)
+            print(meta['name'])
+        except:
+            print(meta['name'])
+    print('Finished! ')

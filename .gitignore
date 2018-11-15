@@ -3,7 +3,10 @@ data
 models/*
 shits/*
 wrongs/*
+shits
 wrongs
+hpc*
+*jpg
 *.pyc
 *.pth
 *.csv
