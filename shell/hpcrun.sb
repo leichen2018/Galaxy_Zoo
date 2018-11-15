@@ -11,8 +11,8 @@
 #SBATCH --error=hpc_outputs/slurm_%j.err 
 #SBATCH --gres=gpu:1
 
-cd /home/yc3390/project/galaxy/code/galaxy_stn
+cd ~/gcnn/Galaxy_Zoo
 module purge
 
-source activate galaxy1
+source ~/anaconda3/bin/activate galaxy1
 bash shell/train.sh
