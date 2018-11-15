@@ -23,8 +23,8 @@ from galaxy import GalaxyZooDataset
 from torch.utils.data import DataLoader
 
 val_data = GalaxyZooDataset(train=False, transform=val_transforms)
-val_loader = DataLoader(train_data, batch_size=args.batch_size, shuffle=False,
-                                  num_workers=8, pin_memory=True, collate_fn=train_data.collate)
+val_loader = DataLoader(val_data, batch_size=32, shuffle=False,
+                                  num_workers=8, pin_memory=True, collate_fn=val_data.collate)
 
 ### Neural Network and Optimizer
 # We define neural net in model.py so that it can be reused by the evaluate.py script
@@ -57,8 +57,9 @@ def validation():
             name = names[i]
             strs = "{}".format(int(name))
             for j in range(37):
-                strs = strs + ',' +float(output[i][j])
-                 output_file.write(strs)
+                strs = strs + ',{}'.format(float(output[i][j]))
+            print(strs)
+            output_file.write(strs)
 
     print(dt.now(), 'Done. ')
 
