@@ -52,7 +52,7 @@ def validation():
         data = meta['image'].to(device)
         names = meta['name']
         data = Variable(data, volatile=True)
-        output = model(data)
+        output = torch.clamp(model(data), 0, 1)
         for i in range(len(names)):
             name = names[i]
             strs = "{}".format(int(name))
