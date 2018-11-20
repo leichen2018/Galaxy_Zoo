@@ -62,6 +62,7 @@ def validation():
             output_file.write(strs)
 
     print(dt.now(), 'Done. ')
+##
 
 
 print(dt.now(),'Start.') 
