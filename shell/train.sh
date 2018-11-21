@@ -1,5 +1,5 @@
 set -x
-MODEL="2stn_2bn_0.5dp_0.9moment"
+MODEL="tund_origin_0.5dp_0.9moment"
 
 mkdir -p models/${MODEL}
 #cp shell/train.sh models/${MODEL}/

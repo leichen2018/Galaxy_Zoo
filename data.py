@@ -9,29 +9,20 @@ import torchvision.transforms as transforms
 # and normalize them to mean = 0 and standard-deviation = 1 based on statistics collected from
 # the training set
 data_transforms = transforms.Compose([
-
-    #transforms.RandomAffine(degrees=15, translate=(0.1, 0.1), scale=(0.9, 1.1)),
-    transforms.RandomAffine(degrees=25, translate=(0.2, 0.2), scale=(0.9, 1.1)),
-    #transforms.RandomResizedCrop(48, ratio=(0.8, 1.25)),
-
-    transforms.RandomResizedCrop(48, scale=(0.9, 1), ratio=(0.8, 1.25)),
-    #transforms.RandomResizedCrop(48),
-    #transforms.ColorJitter(0.1, 0.1, 0.1),
+    transforms.CenterCrop(200),
+    transforms.RandomResizedCrop(120),
+    transforms.RandomAffine(degrees=[-90, 0, 90, 180], translate=(0.2, 0.2), scale=(0.8, 1.25)),
     transforms.ColorJitter(0.3, 0.3, 0.3, 0.3),
 
     transforms.ToTensor(),
-    transforms.Normalize((0.3337, 0.3064, 0.3171), ( 0.2672, 0.2564, 0.2629))
+    transforms.Normalize((0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
 ])
 
 
 val_transforms = transforms.Compose([
-    transforms.Scale((48, 48)),
-    #transforms.RandomAffine(degrees=5, translate=(0.1, 0.1), scale=(0.9, 1.1)),
-    #transforms.RandomResizedCrop(48, scale=(0.9, 1), ratio=(0.8, 1.25)),
-    #transforms.RandomResizedCrop(48),
-    #transforms.ColorJitter(0.1, 0., 0.),
+    transforms.Scale((120, 120)),
     transforms.ToTensor(),
-    transforms.Normalize((0.3337, 0.3064, 0.3171), ( 0.2672, 0.2564, 0.2629))
+    transforms.Normalize((0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
 ])
 
 def initialize_data(folder):

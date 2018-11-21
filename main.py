@@ -53,7 +53,8 @@ train_loader = DataLoader(train_data, batch_size=args.batch_size, shuffle=True,
 ### Neural Network and Optimizer
 # We define neural net in model.py so that it can be reused by the evaluate.py script
 #from model_dnn import Net
-from paper_2stn import Net
+#from paper_2stn import Net
+from paper_tund import Net
 model = Net(args.no_dp, p = args.p)
 device = torch.device('cuda:0')
 
