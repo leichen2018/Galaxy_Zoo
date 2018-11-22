@@ -29,7 +29,8 @@ val_loader = DataLoader(val_data, batch_size=32, shuffle=False,
 ### Neural Network and Optimizer
 # We define neural net in model.py so that it can be reused by the evaluate.py script
 #from model_dnn import Net
-from paper_2stn import Net
+#from paper_2stn import Net
+from paper_tund import Net
 model = Net()
 device = torch.device('cuda:0')
 
@@ -58,7 +59,6 @@ def validation():
             strs = "{}".format(int(name))
             for j in range(37):
                 strs = strs + ',{}'.format(float(output[i][j]))
-            print(strs)
             output_file.write(strs + '\n')
 
     print(dt.now(), 'Done. ')

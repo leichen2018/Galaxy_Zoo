@@ -67,7 +67,7 @@ if args.load:
 
 model.to(device)
 optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum, weight_decay = args.weight_decay)
-scheduler = optim.lr_scheduler.StepLR(optimizer, args.step)
+scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[100,150,200], gamma=0.1)
 least_mse = np.inf
 
 def train(epoch):
