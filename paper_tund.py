@@ -40,20 +40,20 @@ class Net(nn.Module):
             '''
 
     def forward(self, x):
-
+        #print(x.size())
         x = F.relu(self.bn1(self.conv1(x)))
-        x = F.max_pool2d(x, kernel_size=3, stride=3)
-
+        x = F.max_pool2d(x, kernel_size=3, stride=3, padding=1)
+        #print(x.size())
         x = F.relu(self.bn2(self.conv2(x)))
-        x = F.max_pool2d(x, kernel_size=2, stride=2)
-
+        x = F.max_pool2d(x, kernel_size=2, stride=2, padding=1)
+        #print(x.size())
         x = F.relu(self.bn3(self.conv3(x)))
         x = F.relu(self.bn4(self.conv4(x)))
         x = F.relu(self.bn5(self.conv5(x)))
 
         x = F.relu(self.bn6(self.conv6(x)))
-        x = F.max_pool2d(x, kernel_size=3, stride=3)
-
+        x = F.max_pool2d(x, kernel_size=3, stride=3, padding=1)
+        #print(x.size())
         x = x.view(-1, 6144)
 
         x = F.dropout(F.relu(self.fc1(x)), p=self.p, training=self.training)
