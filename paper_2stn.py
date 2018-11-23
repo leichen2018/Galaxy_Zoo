@@ -110,7 +110,7 @@ class Net(nn.Module):
 
         x = F.relu(F.max_pool2d(self.conv1(x), 2))
         x = self.bn1(x)
-
+        
         # STN 2 
         x = self.stn2(x, x)
 
