@@ -53,9 +53,8 @@ def validation():
         data = meta['image'].to(device)
         names = meta['name']
         data = Variable(data, volatile=True)
-        ncrops = 5
-        bs = data.size()[0]/ncrops
-        output = torch.clamp(model(data), 0, 1)
+        bs, ncrops, c, h, w = data.size()
+        output = torch.clamp(model(data.view(-1, c, h, w)), 0, 1)
         output = output.view(bs, ncrops, -1).mean(1)
         for i in range(len(names)):
             name = names[i]

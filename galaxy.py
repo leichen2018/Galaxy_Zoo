@@ -107,11 +107,7 @@ class GalaxyZooDataset(data.Dataset):
                 image[3] = f.normalize(image[3], (0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
                 image[4] = f.normalize(image[4], (0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
 
-                self._meta(meta, name, image[0], prob)
-                self._meta(meta, name, image[1], prob)
-                self._meta(meta, name, image[2], prob)
-                self._meta(meta, name, image[3], prob)
-                self._meta(meta, name, image[4], prob)
+                self._meta(meta, name, image, prob)
 
             except:
                 print('Error in loading testing image', pic)
