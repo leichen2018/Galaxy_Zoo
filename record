@@ -1,2 +1,3 @@
 tund_001lr_200ep_0.9moment 0.09636 w/o reflection and subpatch of test image, 200 epochs, would try 250 epochs next time
-tund_001lr_250ep_0.9moment 0.9600 extend to 250 epoches from the above one, would try five crop next time
+tund_001lr_250ep_0.9moment 0.09600 extend to 250 epoches from the above one, would try five crop next time
+tund_001lr_250ep_0.9moment 0.19906 the same trained model as above, first time test with five crop
