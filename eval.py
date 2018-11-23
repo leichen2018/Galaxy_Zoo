@@ -50,6 +50,8 @@ output_file.write(head)
 def validation():
     model.eval()
     for meta in val_loader:
+        print(meta['image'].size())
+        data = meta['image'].view(-1,1,1)
         data = meta['image'].to(device)
         names = meta['name']
         data = Variable(data, volatile=True)

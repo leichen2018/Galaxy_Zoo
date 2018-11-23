@@ -99,9 +99,7 @@ class GalaxyZooDataset(data.Dataset):
                 image = cv2.imread(pic)
                 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
                 image = Image.fromarray(image)
-                image = f.five_crop(image)
-
-                image = torch.stack([f.normalize(f.to_tensor(x)) for x in image], 0)
+                image = self.transform(image)
 
                 self._meta(meta, name, image, prob)
 

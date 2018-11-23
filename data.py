@@ -1,6 +1,7 @@
 from __future__ import print_function
 import zipfile
 import os
+import torch
 
 import torchvision.transforms as transforms
 
@@ -20,7 +21,8 @@ data_transforms = transforms.Compose([
 
 val_transforms = transforms.Compose([
     transforms.FiveCrop(120),
-    transforms.Normalize((0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
+    transforms.Lambda(lambda crops: torch.stack([transforms.ToTensor()(crop) for crop in crops]))
+    #transforms.Normalize((0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
 ])
 
 def initialize_data(folder):
