@@ -101,11 +101,7 @@ class GalaxyZooDataset(data.Dataset):
                 image = Image.fromarray(image)
                 image = f.five_crop(image)
 
-                image[0] = f.normalize(image[0], (0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
-                image[1] = f.normalize(image[1], (0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
-                image[2] = f.normalize(image[2], (0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
-                image[3] = f.normalize(image[3], (0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
-                image[4] = f.normalize(image[4], (0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
+                image = torch.stack([f.normalize(f.to_tensor(x)) for x in image], 0)
 
                 self._meta(meta, name, image, prob)
 
