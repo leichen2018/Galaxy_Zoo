@@ -18,7 +18,6 @@ data_transforms = transforms.Compose([
     transforms.Normalize((0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
 ])
 
-
 val_transforms = transforms.Compose([
     transforms.FiveCrop(120),
     Lambda(lambda crops: torch.stack([ToTensor()(crop) for crop in crops])),

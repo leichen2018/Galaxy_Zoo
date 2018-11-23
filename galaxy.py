@@ -8,6 +8,7 @@ from PIL import Image
 from random import randint
 import math
 from torch.utils.data import DataLoader
+import torchvision.transforms.functional as f
 
 INPUTSIZE = (224, 224)
 
@@ -78,20 +79,43 @@ class GalaxyZooDataset(data.Dataset):
             name = self.training_keys[index]
             pic  = self.training_set[name]
             prob = torch.FloatTensor(self.training_ps[name])
+
+            try:
+                image = cv2.imread(pic)
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                image = Image.fromarray(image)
+                image = self.transform(image)
+
+                self._meta(meta, name, image, prob)
+
+            except:
+                print('Error in loading image ', pic)
         else:
             name = self.test_keys[index]
             pic  = self.test_set[name]
             prob = torch.Tensor([0]) 
 
-        try:
-            image = cv2.imread(pic)
-            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-            image = Image.fromarray(image)
-            image = self.transform(image)
-        except:
-            print('Error in loading image ', pic)
+            try:
+                image = cv2.imread(pic)
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                image = Image.fromarray(image)
+                image = f.five_crop(image)
 
-        self._meta(meta, name, image, prob)
+                image[0] = f.normalize(image[0], (0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
+                image[1] = f.normalize(image[1], (0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
+                image[2] = f.normalize(image[2], (0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
+                image[3] = f.normalize(image[3], (0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
+                image[4] = f.normalize(image[4], (0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
+
+                self._meta(meta, name, image[0], prob)
+                self._meta(meta, name, image[1], prob)
+                self._meta(meta, name, image[2], prob)
+                self._meta(meta, name, image[3], prob)
+                self._meta(meta, name, image[4], prob)
+
+            except:
+                print('Error in loading testing image', pic)
+
         return meta
 
     def __len__(self):
