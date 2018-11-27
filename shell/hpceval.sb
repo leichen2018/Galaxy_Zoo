@@ -11,7 +11,7 @@
 #SBATCH --error=hpc_outputs/slurm_%j.err 
 #SBATCH --gres=gpu:1
 
-cd ~/tund/Galaxy_Zoo
+cd ~/groupy/Galaxy_Zoo
 module purge
 
 source ~/anaconda3/bin/activate galaxy1
