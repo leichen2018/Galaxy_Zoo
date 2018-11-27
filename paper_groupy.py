@@ -18,7 +18,7 @@ def to_bn(x):
 
 def from_bn(x, channels=8):
     xs = x.size()
-    x = x.view(xs[0], xs[1] / channels, channels, x.size()[2], x.size()[3])
+    x = x.view(xs[0], xs[1] // channels, channels, x.size()[2], x.size()[3])
     return x
 
 class Net(nn.Module):
@@ -69,7 +69,7 @@ class Net(nn.Module):
         #print(x.size())
         x = from_bn(F.relu(self.bn3(to_bn(self.conv3(x)))))
         x = from_bn(F.relu(self.bn4(to_bn(self.conv4(x)))))
-        x = from_bn(F.relu(self.bn5(self.conv5(x))))
+        x = from_bn(F.relu(self.bn5(to_bn(self.conv5(x)))))
 
         x = F.relu(self.bn6(to_bn(self.conv6(x))))
         x = F.max_pool2d(x, kernel_size=3, stride=3, padding=1)

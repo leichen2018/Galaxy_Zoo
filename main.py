@@ -42,7 +42,7 @@ print(args)
 torch.manual_seed(args.seed)
 
 ### Data Initialization and Loading
-from data import initialize_data, data_transforms, val_transforms # data.py in the same folder
+from data import data_transforms, val_transforms # data.py in the same folder
 from galaxy import GalaxyZooDataset
 from torch.utils.data import DataLoader
 
