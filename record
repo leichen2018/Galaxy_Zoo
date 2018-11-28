@@ -8,3 +8,4 @@ tund_001lr_250ep_0.9moment 0.11002 the same trained model as above, ten crop
 tund_001lr_5crop_250ep_0.9moment 0.11260 changes in data_transforms, would try flip and rotate next time
 tund_001lr_5crop_250ep_0.9moment_nocrop 0.08786 no crop with above data_transforms
 tund_001lr_5crop_250ep_0.9moment_crop 0.11260 same with above 11260 just split eval.py into crop and no crop
+groupy_001lr_5crop_250ep_0.9moment ** first version with GrouPy, default initilization of all weights
