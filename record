@@ -5,7 +5,11 @@ tund_001lr_250ep_0.9moment 0.18366 the same trained model as above, scale test d
 tund_001lr_250ep_0.9moment 0.16699 the same trained model as above, change mean between five crops to max
 tund_001lr_250ep_0.9moment 0.10855 the same trained model as above, add normalize in val_transforms
 tund_001lr_250ep_0.9moment 0.11002 the same trained model as above, ten crop
-tund_001lr_5crop_250ep_0.9moment 0.11260 changes in data_transforms, would try flip and rotate next time
-tund_001lr_5crop_250ep_0.9moment_nocrop 0.08786 no crop with above data_transforms
-tund_001lr_5crop_250ep_0.9moment_crop 0.11260 same with above 11260 just split eval.py into crop and no crop
-groupy_001lr_5crop_250ep_0.9moment ** first version with GrouPy, default initilization of all weights
+tund_5crop_001lr_250ep_0.9moment 0.11260 changes in data_transforms, would try flip and rotate next time
+tund_5crop_001lr_250ep_0.9moment_nocrop 0.08786 no crop with above data_transforms
+tund_5crop_001lr_250ep_0.9moment_crop 0.11260 same with above 11260 just split eval.py into crop and no crop
+groupy_5crop_001lr_250ep_0.9moment_crop 0.11204 first version with GrouPy, default initilization of all weights
+groupy_5crop_001lr_250ep_0.9moment_nocrop 0.08762 first version with GrouPy, default initilization of all weight
+groupy_360degree_001lr_250ep_0.9moment_ ** change train_trainsform affine degree from 0 to 360, trial. plan to 90 180 later
+groupy_180degree_001lr_250ep_0.9moment_ ** affine 180 degree
+groupy_90degree_001lr_250ep_0.9moment_ ** affine 90 degree

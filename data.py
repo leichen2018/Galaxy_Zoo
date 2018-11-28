@@ -11,11 +11,10 @@ import torchvision.transforms as transforms
 # the training set
 data_transforms = transforms.Compose([
     transforms.CenterCrop(300),
-    #transforms.RandomAffine(degrees=180, translate=(0.1, 0.1), scale=(0.8, 1.25)),
-    transforms.RandomAffine(degrees=0, translate=(0.1, 0.1), scale=(0.8, 1.25)),
+    transforms.RandomAffine(degrees=90, translate=(0.1, 0.1), scale=(0.8, 1.25)),
     transforms.RandomResizedCrop(200, scale=(0.9, 1.1), ratio=(0.67, 1.5)),
     transforms.Scale(120),
-    transforms.ColorJitter(0.2, 0.2, 0.2, 0.2),
+    transforms.ColorJitter(0.1, 0.1, 0.1, 0.1),
 
     transforms.ToTensor(),
     transforms.Normalize((0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
@@ -30,7 +29,6 @@ val_transforms_crop = transforms.Compose([
 val_transforms = transforms.Compose([
     transforms.Scale(180),
     transforms.CenterCrop(120),
-
     transforms.ToTensor(),
     transforms.Normalize((0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
 ])
