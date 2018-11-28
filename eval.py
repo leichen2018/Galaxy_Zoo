@@ -19,7 +19,7 @@ args = parser.parse_args()
 print(args)
 
 ### Data Initialization and Loading
-from data import data_transforms, val_transforms_crop, val_transforms # data.py in the same folder
+from data import data_transforms, val_transforms_crop, val_transforms, constraints # data.py in the same folder
 from galaxy import GalaxyZooDataset
 from torch.utils.data import DataLoader
 
@@ -73,6 +73,8 @@ def validation():
         if args.crop:
             output = output.view(len(names), 5, -1).max(1)
             output = output[0]
+
+        output = constraints(output)
 
         for i in range(len(names)):
             name = names[i]

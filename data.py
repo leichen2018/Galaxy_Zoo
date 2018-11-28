@@ -32,3 +32,88 @@ val_transforms = transforms.Compose([
     transforms.ToTensor(),
     transforms.Normalize((0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
 ])
+
+eps=1e-8
+
+def constraints(x):
+    for i in range(x.size()[0]):
+        #1
+        t = x[i][0].item() + x[i][1].item() + x[i][2].item() + eps
+        x[i][0] = x[i][0].item() / t
+        x[i][1] = x[i][1].item() / t
+        x[i][2] = x[i][2].item() / t
+
+        #2
+        t = x[i][3].item() + x[i][4].item() + eps
+        x[i][3] = x[i][3].item() / t * x[i][1].item()
+        x[i][4] = x[i][4].item() / t * x[i][1].item()
+
+        #7
+        t1 = x[i][15].item() + x[i][16].item() + x[i][17].item() + eps
+        t2 = x[i][0].item()
+        x[i][15] = x[i][15].item() / t1 * t2
+        x[i][16] = x[i][16].item() / t1 * t2
+        x[i][17] = x[i][17].item() / t1 * t2
+
+        #3
+        t1 = x[i][5].item() + x[i][6].item() + eps
+        t2 = x[i][4].item()
+        x[i][5] = x[i][5].item() / t1 * t2
+        x[i][6] = x[i][6].item() / t1 * t2
+
+        #9
+        t1 = x[i][25].item() + x[i][26].item() + x[i][27].item() + eps
+        t2 = x[i][3].item()
+        x[i][25] = x[i][25].item() / t1 * t2
+        x[i][26] = x[i][26].item() / t1 * t2
+        x[i][27] = x[i][27].item() / t1 * t2
+
+        #4
+        t1 = x[i][7].item() + x[i][8].item() + eps
+        t2 = x[i][5].item() + x[i][6].item()
+        x[i][7] = x[i][7].item() / t1 * t2
+        x[i][8] = x[i][8].item() / t1 * t2
+
+        #10
+        t1 = x[i][28].item() + x[i][29].item() + x[i][30].item() + eps
+        t2 = x[i][3].item()
+        x[i][28] = x[i][28].item() / t1 * t2
+        x[i][29] = x[i][29].item() / t1 * t2
+        x[i][30] = x[i][30].item() / t1 * t2
+
+        #11
+        t1 = x[i][31].item() + x[i][32].item() + x[i][33].item() + x[i][34].item() + x[i][35].item() + x[i][36].item() + eps
+        t2 = x[i][28].item() + x[i][29].item() + x[i][30].item()
+        x[i][31] = x[i][31].item() / t1 * t2
+        x[i][32] = x[i][32].item() / t1 * t2
+        x[i][33] = x[i][33].item() / t1 * t2
+        x[i][34] = x[i][34].item() / t1 * t2
+        x[i][35] = x[i][35].item() / t1 * t2
+        x[i][36] = x[i][36].item() / t1 * t2
+
+        #5
+        t1 = x[i][9].item() + x[i][10].item() + x[i][11].item() + x[i][12].item() + eps
+        t2 = x[i][31].item() + x[i][32].item() + x[i][33].item() + x[i][34].item() + x[i][35].item() + x[i][36].item() + x[i][8].item()
+        x[i][9] = x[i][9].item() / t1 * t2
+        x[i][10] = x[i][10].item() / t1 * t2
+        x[i][11] = x[i][11].item() / t1 * t2
+        x[i][12] = x[i][12].item() / t1 * t2
+
+        #6
+        t1 = x[i][13].item() + x[i][14].item() + eps
+        t2 = x[i][9].item() + x[i][10].item() + x[i][11].item() + x[i][12].item() + x[i][15].item() + x[i][16].item() + x[i][17].item() + x[i][25].item() + x[i][26].item() + x[i][27].item()
+        x[i][13] = x[i][13].item() / t1 * t2
+        x[i][14] = x[i][14].item() / t1 * t2
+
+        #8
+        t1 = x[i][18].item() + x[i][19].item() + x[i][20].item() + x[i][21].item() + x[i][22].item() + x[i][23].item() + x[i][24].item() + eps
+        t2 = x[i][13].item()
+        x[i][18] = x[i][18].item() / t1 * t2
+        x[i][19] = x[i][19].item() / t1 * t2
+        x[i][20] = x[i][20].item() / t1 * t2
+        x[i][21] = x[i][21].item() / t1 * t2
+        x[i][22] = x[i][22].item() / t1 * t2
+        x[i][23] = x[i][23].item() / t1 * t2
+        x[i][24] = x[i][24].item() / t1 * t2
+
+    return x
