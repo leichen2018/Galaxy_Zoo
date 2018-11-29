@@ -12,4 +12,7 @@ groupy_5crop_001lr_250ep_0.9moment_crop 0.11204 first version with GrouPy, defau
 groupy_5crop_001lr_250ep_0.9moment_nocrop 0.08762 first version with GrouPy, default initilization of all weight
 groupy_360degree_001lr_250ep_0.9moment_ 0.08677 change train_trainsform affine degree from 0 to 360, trial. plan to 90 180 later
 groupy_180degree_001lr_250ep_0.9moment_ 0.08620 affine 180 degree
-groupy_90degree_001lr_250ep_0.9moment_ ** affine 90 degree
+groupy_90degree_001lr_250ep_0.9moment_ 0.08667 affine 90 degree
+using constraints() to postprocess test result ~0.12
+groupy_2fc_90degree_001lr_250ep_0.9moemnt_ 0.08288 change to 2 full connected layer and color jittet to 0.1
+groupy_2fc_init_90degree_001lr_250ep_0.9moemnt_ ** weight initialization

@@ -4,6 +4,7 @@ import torch.nn.functional as F
 import torchvision.transforms as transforms
 import math
 from groupy.gconv.pytorch_gconv import P4MConvZ2, P4MConvP4M
+from groupy.gconv.pytorch_gconv.splitgconv2d import SplitGConv2D
 #from groupy.gconv.pytorch_gconv.pooling import plane_group_spatial_max_pooling
 
 nclasses = 37 # GTSRB as 43 classes
@@ -42,10 +43,13 @@ class Net(nn.Module):
         self.fc1 = nn.Linear(8192, 2048)
         self.fc2 = nn.Linear(2048, 2048)
         self.fc3 = nn.Linear(2048, nclasses)
+        self.fc1 = nn.Linear(8192, 1024)
+        self.fc2 = nn.Linear(1024, nclasses)
 
         # Initilize the parameters
-        '''for m in self.modules():
-            if isinstance(m, nn.Conv2d):
+        '''
+        for m in self.modules():
+            if isinstance(m, SplitGConv2D):
                 #n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
                 m.weight.data.normal_(0, 0.01)
                 m.bias.data.zero_()
@@ -77,6 +81,7 @@ class Net(nn.Module):
         x = x.view(-1, 8192)
 
         x = F.dropout(F.relu(self.fc1(x)), p=self.p, training=self.training)
-        x = F.dropout(F.relu(self.fc2(x)), p=self.p, training=self.training)
-        x = F.relu(self.fc3(x))
+        #x = F.dropout(F.relu(self.fc2(x)), p=self.p, training=self.training)
+        #x = F.relu(self.fc3(x))
+        x = F.relu(self.fc2(x))
         return x

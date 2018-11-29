@@ -74,7 +74,7 @@ def validation():
             output = output.view(len(names), 5, -1).max(1)
             output = output[0]
 
-        output = constraints(output)
+        #output = constraints(output)
 
         for i in range(len(names)):
             name = names[i]

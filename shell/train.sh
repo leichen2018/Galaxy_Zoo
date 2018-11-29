@@ -1,5 +1,5 @@
 set -x
-MODEL="groupy_90degree_001lr_250ep_0.5dp_0.9moment"
+MODEL="groupy_2fc_init_90degree_001lr_250ep_0.5dp_0.9moment"
 
 mkdir -p models/${MODEL}
 #cp shell/train.sh models/${MODEL}/
