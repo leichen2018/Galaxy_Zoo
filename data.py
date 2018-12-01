@@ -4,6 +4,25 @@ import os
 import torch
 
 import torchvision.transforms as transforms
+import torchvision.transforms.functional as TF
+
+def rotate_crop(img, size):
+    img = TF.center_crop(img, size)
+    img1 = TF.rotate(img, 90)
+    img2 = TF.rotate(img, 180)
+    img3 = TF.rotate(img, -90)
+
+    return (img, img1, img2, img3)
+
+class RotateCrop(object):
+    def __init__(self, size):
+        self.size = size
+
+    def __call__(self, img):
+        return rotate_crop(img, self.size)
+
+    def __repr__(self):
+        return self.__class__.__name__ + '(rotate_crop=true, size={0})'.format(self.size)
 
 # once the images are loaded, how do we pre-process them before being passed into the network
 # by default, we resize the images to 32 x 32 in size
@@ -19,6 +38,12 @@ data_transforms = transforms.Compose([
 
     transforms.ToTensor(),
     transforms.Normalize((0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
+])
+
+val_transforms_rotate = transforms.Compose([
+    transforms.Scale(180),
+    RotateCrop(120),
+    transforms.Lambda(lambda crops: torch.stack([transforms.Normalize((0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))(transforms.ToTensor()(crop)) for crop in crops]))
 ])
 
 val_transforms_crop = transforms.Compose([
