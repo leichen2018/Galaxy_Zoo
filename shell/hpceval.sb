@@ -15,4 +15,4 @@ cd ~/groupy/Galaxy_Zoo
 module purge
 
 source ~/anaconda3/bin/activate galaxy1
-bash shell/eval.sh
+bash ~/groupy/Galaxy_Zoo/shell/eval.sh

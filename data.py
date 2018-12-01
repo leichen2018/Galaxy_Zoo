@@ -13,8 +13,9 @@ data_transforms = transforms.Compose([
     transforms.CenterCrop(300),
     transforms.RandomAffine(degrees=90, translate=(0.1, 0.1), scale=(0.8, 1.25)),
     transforms.RandomResizedCrop(200, scale=(0.9, 1.1), ratio=(0.67, 1.5)),
+    transforms.RandomHorizontalFlip(0.5),
     transforms.Scale(120),
-    transforms.ColorJitter(0.2, 0.2, 0.2, 0.2),
+    transforms.ColorJitter(0.5, 0, 0, 0),
 
     transforms.ToTensor(),
     transforms.Normalize((0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))

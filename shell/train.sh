@@ -1,10 +1,10 @@
 set -x
-MODEL="groupy_2fc_init_90degree_001lr_250ep_0.5dp_0.9moment"
+MODEL="groupy_2fc512_90degree_001lr_250ep_0.5dp_0.9moment"
 
 mkdir -p models/${MODEL}
 #cp shell/train.sh models/${MODEL}/
 
-python3 main.py  \
+python3 ~/groupy/Galaxy_Zoo/main.py  \
 --name ${MODEL}  \
 --batch_size 32  \
 --step 14 \

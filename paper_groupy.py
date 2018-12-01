@@ -40,11 +40,11 @@ class Net(nn.Module):
         self.conv6 = P4MConvP4M(in_channels=64, out_channels=64, kernel_size=3)
         self.bn6 = nn.BatchNorm2d(512)
 
-        self.fc1 = nn.Linear(8192, 2048)
-        self.fc2 = nn.Linear(2048, 2048)
-        self.fc3 = nn.Linear(2048, nclasses)
-        self.fc1 = nn.Linear(8192, 1024)
-        self.fc2 = nn.Linear(1024, nclasses)
+        #self.fc1 = nn.Linear(8192, 2048)
+        #self.fc2 = nn.Linear(2048, 2048)
+        #self.fc3 = nn.Linear(2048, nclasses)
+        self.fc1 = nn.Linear(8192, 512)
+        self.fc2 = nn.Linear(512, nclasses)
 
         # Initilize the parameters
         '''
