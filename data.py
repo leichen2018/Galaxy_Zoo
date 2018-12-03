@@ -18,7 +18,7 @@ def rotate_crop(img, size):
 
     return (img, img1, img2, img3, img4, img5, img6, img7)
 
-class RotateCrop(object):
+class val_Rotate(object):
     def __init__(self, size):
         self.size = size
 
@@ -27,6 +27,30 @@ class RotateCrop(object):
 
     def __repr__(self):
         return self.__class__.__name__ + '(rotate_crop=true, size={0})'.format(self.size)
+
+def four_crop(img, size):
+    img0, img1, img2, img3, img4 = TF.five_crop(img, size)
+    return (img0, TF.rotate(img1, 90), TF.rotate(img2, -90), TF.rotate(img3, 180))
+
+
+def train_rc(img, size):
+    img_osize_0 = img
+    img_osize_1 = TF.rotate(img, 45)
+    img_osize_2 = TF.hflip(img_osize_0)
+    img_osize_3 = TF.hflip(img_osize_1)
+
+    return four_crop(img_osize_0, size) + four_crop(img_osize_1, size) + four_crop(img_osize_2, size) + four_crop(img_osize_3, size)
+
+
+class train_RotateCrop(object):
+    def __init__(self, size):
+        self.size = size
+
+    def __call__(self, img):
+        return train_rc(img, self.size)
+
+    def __repr__(self):
+        return self.__class__.__name__ + '(train_rc=true, size={0})'.format(self.size)
 
 # once the images are loaded, how do we pre-process them before being passed into the network
 # by default, we resize the images to 32 x 32 in size
@@ -44,9 +68,20 @@ data_transforms = transforms.Compose([
     transforms.Normalize((0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))
 ])
 
+data_transforms_rc = transforms.Compose([
+    transforms.ColorJitter(0.5, 0, 0, 0),
+    transforms.CenterCrop(300),
+    transforms.RandomAffine(degrees=0, translate=(0.1, 0.1), scale=(0.8, 1.25)),
+    train_RotateCrop(120),
+    
+    transforms.Lambda(lambda crops: torch.stack(
+        [transforms.Normalize((0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))(transforms.ToTensor()(crop)) for crop
+         in crops]))
+])
+
 val_transforms_rotate = transforms.Compose([
     transforms.Scale(180),
-    RotateCrop(120),
+    val_Rotate(120),
     transforms.Lambda(lambda crops: torch.stack([transforms.Normalize((0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))(transforms.ToTensor()(crop)) for crop in crops]))
 ])
 

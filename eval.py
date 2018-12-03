@@ -15,12 +15,13 @@ parser.add_argument('--name', type=str, default='experiment.csv')
 parser.add_argument('--load', type=str)
 parser.add_argument('--crop', action='store_true')
 parser.add_argument('--rotate', action='store_true')
+parser.add_argument('--rc', action='store_true')
 
 args = parser.parse_args()
 print(args)
 
 ### Data Initialization and Loading
-from data import data_transforms, val_transforms_crop, val_transforms, constraints, val_transforms_rotate # data.py in the same folder
+from data import data_transforms, val_transforms_crop, val_transforms, constraints, val_transforms_rotate, data_transforms_rc # data.py in the same folder
 from galaxy import GalaxyZooDataset
 from torch.utils.data import DataLoader
 
@@ -28,6 +29,8 @@ if args.crop:
     transforms = val_transforms_crop
 elif args.rotate:
     transforms = val_transforms_rotate
+elif args.rc:
+    transforms = data_transforms_rc
 else:
     transforms = val_transforms
 
@@ -56,6 +59,8 @@ if args.crop:
     output_file = open('./results/' + args.name + '_crop', "w")
 elif args.rotate:
     output_file = open('./results/' + args.name + '_rotate', "w")
+elif args.rc:
+    output_file = open('./results/' + args.name + '_rc', "w")
 else:
     output_file = open('./results/' + args.name + '_nocrop', "w")
 
@@ -67,7 +72,7 @@ output_file.write(head)
 def validation():
     model.eval()
     for meta in val_loader:
-        if args.crop or args.rotate:
+        if args.crop or args.rotate or args.rc:
             data = meta['image'].view(-1, 3, 120, 120)
             data = data.to(device)
         else:
@@ -81,6 +86,8 @@ def validation():
             output = output[0]
         elif args.rotate:
             output = output.view(len(names), 4, -1).mean(1)
+        elif args.rc:
+            output = output.view(len(names), 16, -1).mean(1)
 
         #output = constraints(output)
 

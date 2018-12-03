@@ -45,11 +45,11 @@ print(args)
 torch.manual_seed(args.seed)
 
 ### Data Initialization and Loading
-from data import data_transforms, val_transforms # data.py in the same folder
+from data import data_transforms, val_transforms, data_transforms_rc # data.py in the same folder
 from galaxy import GalaxyZooDataset
 from torch.utils.data import DataLoader
 
-train_data = GalaxyZooDataset(train=True, transform=data_transforms)
+train_data = GalaxyZooDataset(train=True, transform=data_transforms_rc)
 train_loader = DataLoader(train_data, batch_size=args.batch_size, shuffle=True,
                                   num_workers=8, pin_memory=True, collate_fn=train_data.collate)
 
@@ -84,9 +84,13 @@ def train(epoch):
     loss_total = 0
     loss_step  = 0
     for batch_idx, meta in enumerate(train_loader):
-        data, target = meta['image'].to(device), meta['prob'].to(device)
+        data, target = meta['image'].view(-1, 3, 120, 120).to(device), meta['prob'].to(device)
         data, target = Variable(data), Variable(target)
         optimizer.zero_grad()
+        a = torch.cuda.FloatTensor(16, args.batch_size, 120, 120).fill_(0)
+        target = a + target
+        target = torch.transpose(target, 0, 1)
+        target = target.reshape(-1, 120, 120)
         output = model(data)
         loss = F.mse_loss(output, target)
         loss.backward()
