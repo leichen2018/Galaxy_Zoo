@@ -1,0 +1,18 @@
+#!/bin/bash
+#SBATCH --verbose
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=8
+#SBATCH --time=24:00:00
+#SBATCH --mem=64GB
+#SBATCH --job-name=wd1
+#SBATCH --mail-type=END
+#SBATCH --mail-user=lc3909nyu.edu
+#SBATCH --output=hpc_outputs/slurm_%j.out
+#SBATCH --error=hpc_outputs/slurm_%j.err 
+#SBATCH --gres=gpu:1
+
+cd ~/groupy/Galaxy_Zoo
+module purge
+
+source ~/anaconda3/bin/activate galaxy1
+bash ~/groupy/Galaxy_Zoo/shell/train_wd1.sh

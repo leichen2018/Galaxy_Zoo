@@ -8,6 +8,7 @@ from torchvision import datasets, transforms
 from torch.autograd import Variable
 from datetime import datetime as dt
 import numpy as np
+import os
 
 # Training settings
 parser = argparse.ArgumentParser(description='PyTorch GTSRB example')
@@ -15,6 +16,8 @@ parser.add_argument('--name', type=str, default='experiment', metavar='NM',
                     help="name of the training")
 parser.add_argument('--load', type=str,
                     help="load previous model to finetune")
+parser.add_argument('--ftn', type=str,
+                    help="fine tune number")
 parser.add_argument('--data', type=str, default='data', metavar='D',
                     help="folder where data is located. train_data.zip and test_data.zip need to be found in the folder")
 parser.add_argument('--no_dp', action='store_true', default=False,
@@ -68,7 +71,11 @@ if args.load:
 
 model.to(device)
 optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum, weight_decay = args.weight_decay)
-scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[100,150,200], gamma=0.1)
+if args.load:
+    scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[30,60], gamma=0.2)
+else:
+    scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[100,150,200], gamma=0.1)
+
 least_mse = np.inf
 
 def train(epoch):
@@ -96,31 +103,16 @@ def train(epoch):
     print("\nTraining MSE loss: ", loss_total * 1.0 / len(train_loader))
     return loss_total * 1.0 / len(train_loader)       
 
-
-def validatiVon():
-    model.eval()
-    validation_loss = 0
-    correct = 0
-    for data, target in val_loader:
-        data, target = data.to(device), target.to(device)
-        data, target = Variable(data), Variable(target)
-        data, target = Variable(data, volatile=True), Variable(target)
-        output = model(data)
-        validation_loss += F.nll_loss(output, target, size_average=False).data[0] # sum up batch loss
-        pred = output.data.max(1, keepdim=True)[1] # get the index of the max log-probability
-        correct += pred.eq(target.data.view_as(pred)).cpu().sum()
-
-    validation_loss /= len(val_loader.dataset)
-    print(dt.now(), '\nValidation set: Average loss: {:.4f}, Accuracy: {}/{} ({:.2f}%)\n'.format(
-        validation_loss, correct, len(val_loader.dataset),
-        100. * int(correct) / len(val_loader.dataset)))
-
-    return 100. * int(correct) / len(val_loader.dataset)
+if args.load:
+    os.mkdir("models/" + args.name + '_ft' + args.ftn)
 
 for epoch in range(1, args.epochs + 1):
     loss = train(epoch)
     scheduler.step()
-    model_file = "models/" + args.name +'/model_' + str(epoch) +'_{:.9f}'.format(loss) + '.pth'
+    if args.load:
+        model_file = "models/" + args.name + '_ft' + args.ftn  +'/model_' + str(epoch) +'_{:.9f}'.format(loss) + '.pth'
+    else:
+        model_file = "models/" + args.name +'/model_' + str(epoch) +'_{:.9f}'.format(loss) + '.pth'
     if loss < least_mse :
         least_mse = loss
         torch.save(model.state_dict(), model_file)

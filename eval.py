@@ -67,7 +67,7 @@ output_file.write(head)
 def validation():
     model.eval()
     for meta in val_loader:
-        if args.crop:
+        if args.crop or args.rotate:
             data = meta['image'].view(-1, 3, 120, 120)
             data = data.to(device)
         else:

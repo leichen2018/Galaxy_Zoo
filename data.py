@@ -11,8 +11,12 @@ def rotate_crop(img, size):
     img1 = TF.rotate(img, 90)
     img2 = TF.rotate(img, 180)
     img3 = TF.rotate(img, -90)
+    img4 = TF.hflip(img)
+    img5 = TF.rotate(img4, 90)
+    img6 = TF.rotate(img4, 180)
+    img7 = TF.rotate(img4, -90)
 
-    return (img, img1, img2, img3)
+    return (img, img1, img2, img3, img4, img5, img6, img7)
 
 class RotateCrop(object):
     def __init__(self, size):
