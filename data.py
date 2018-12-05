@@ -19,6 +19,7 @@ def rotate_crop(img, size):
     return (img, img1, img2, img3, img4, img5, img6, img7)
 
 class val_Rotate(object):
+    ### new defined transformer of 4-rotate function
     def __init__(self, size):
         self.size = size
 
@@ -43,6 +44,7 @@ def train_rc(img, size):
 
 
 class train_RotateCrop(object):
+    ### new defined transformer of 16-rorate-crop function
     def __init__(self, size):
         self.size = size
 
@@ -80,6 +82,7 @@ data_transforms_rc = transforms.Compose([
 ])
 
 val_transforms_rotate = transforms.Compose([
+    transforms.ColorJitter(0.1, 0.1, 0.1, 0.1),
     transforms.Scale(180),
     val_Rotate(120),
     transforms.Lambda(lambda crops: torch.stack([transforms.Normalize((0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))(transforms.ToTensor()(crop)) for crop in crops]))

@@ -39,6 +39,7 @@ parser.add_argument('--seed', type=int, default=1, metavar='S',
                     help='random seed (default: 1)')
 parser.add_argument('--log-interval', type=int, default=10, metavar='N',
                     help='how many batches to wait before logging training status')
+parser.add_argument('--rc', action='store_true')
 args = parser.parse_args()
 print(args)
 
@@ -49,7 +50,12 @@ from data import data_transforms, val_transforms, data_transforms_rc # data.py i
 from galaxy import GalaxyZooDataset
 from torch.utils.data import DataLoader
 
-train_data = GalaxyZooDataset(train=True, transform=data_transforms_rc)
+if args.rc:
+    transform = data_transforms_rc
+else:
+    transform = data_transforms
+
+train_data = GalaxyZooDataset(train=True, transform=transform)
 train_loader = DataLoader(train_data, batch_size=args.batch_size, shuffle=True,
                                   num_workers=8, pin_memory=True, collate_fn=train_data.collate)
 
@@ -73,8 +79,10 @@ model.to(device)
 optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum, weight_decay = args.weight_decay)
 if args.load:
     scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[30,60], gamma=0.2)
+elif args.rc:
+    scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[6,10,15], gamma=0.1)
 else:
-    scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[100,150,200], gamma=0.1)
+    scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[100, 150, 200], gamma=0.1)
 
 least_mse = np.inf
 
@@ -84,13 +92,21 @@ def train(epoch):
     loss_total = 0
     loss_step  = 0
     for batch_idx, meta in enumerate(train_loader):
-        data, target = meta['image'].view(-1, 3, 120, 120).to(device), meta['prob'].to(device)
+
+        if args.rc:
+            data, target = meta['image'].view(-1, 3, 120, 120).to(device), meta['prob'].to(device)
+        else:
+            data, target = meta['image'].to(device), meta['prob'].to(device)
+
         data, target = Variable(data), Variable(target)
         optimizer.zero_grad()
-        a = torch.cuda.FloatTensor(16, args.batch_size, 120, 120).fill_(0)
-        target = a + target
-        target = torch.transpose(target, 0, 1)
-        target = target.reshape(-1, 120, 120)
+
+        if args.rc:
+            a = torch.cuda.FloatTensor(16, target.size()[0], 37).fill_(0)
+            target = a + target
+            target = torch.transpose(target, 0, 1)
+            target = target.reshape(-1, 37)
+        
         output = model(data)
         loss = F.mse_loss(output, target)
         loss.backward()
