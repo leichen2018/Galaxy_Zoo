@@ -16,6 +16,7 @@ parser.add_argument('--load', type=str)
 parser.add_argument('--crop', action='store_true')
 parser.add_argument('--rotate', action='store_true')
 parser.add_argument('--rc', action='store_true')
+parser.add_argument('--optimized', action='store_true')
 
 args = parser.parse_args()
 print(args)
@@ -44,7 +45,7 @@ val_loader = DataLoader(val_data, batch_size=32, shuffle=False,
 #from paper_2stn import Net
 #from paper_tund import Net
 from paper_groupy import Net
-model = Net()
+model = Net(optimized = args.optimized)
 device = torch.device('cuda:0')
 
 if args.load:
@@ -77,6 +78,7 @@ def validation():
             data = data.to(device)
         else:
             data = meta['image'].to(device)
+
         names = meta['name']
         data = Variable(data, volatile=True)
         output = torch.clamp(model(data), 0, 1)

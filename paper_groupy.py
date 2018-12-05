@@ -5,6 +5,7 @@ import torchvision.transforms as transforms
 import math
 from groupy.gconv.pytorch_gconv import P4MConvZ2, P4MConvP4M
 from groupy.gconv.pytorch_gconv.splitgconv2d import SplitGConv2D
+from custom import OptimisedDivGalaxyOutputLayer
 #from groupy.gconv.pytorch_gconv.pooling import plane_group_spatial_max_pooling
 
 nclasses = 37 # GTSRB as 43 classes
@@ -23,10 +24,11 @@ def from_bn(x, channels=8):
     return x
 
 class Net(nn.Module):
-    def __init__(self, no_dp=False, p=0.5):
+    def __init__(self, no_dp=False, p=0.5, optimized=False):
         super(Net, self).__init__()
         self.no_dp = no_dp
         self.p = p
+        self.optimized = optimized
         self.conv1 = P4MConvZ2(in_channels=3, out_channels=8, kernel_size=5)
         self.bn1 = nn.BatchNorm2d(64)
         self.conv2 = P4MConvP4M(in_channels=8, out_channels=16, kernel_size=5)
@@ -45,6 +47,8 @@ class Net(nn.Module):
         #self.fc3 = nn.Linear(2048, nclasses)
         self.fc1 = nn.Linear(8192, 512)
         self.fc2 = nn.Linear(512, nclasses)
+
+        self.optimized_output = OptimisedDivGalaxyOutputLayer() 
 
         # Initilize the parameters
         '''
@@ -84,4 +88,8 @@ class Net(nn.Module):
         #x = F.dropout(F.relu(self.fc2(x)), p=self.p, training=self.training)
         #x = F.relu(self.fc3(x))
         x = F.relu(self.fc2(x))
+       
+        if self.optimized:
+            x = self.optimized_output.predictions(x)
+        
         return x

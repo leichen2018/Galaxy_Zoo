@@ -40,6 +40,7 @@ parser.add_argument('--seed', type=int, default=1, metavar='S',
 parser.add_argument('--log-interval', type=int, default=10, metavar='N',
                     help='how many batches to wait before logging training status')
 parser.add_argument('--rc', action='store_true')
+parser.add_argument('--optimized', action='store_true')
 args = parser.parse_args()
 print(args)
 
@@ -65,7 +66,7 @@ train_loader = DataLoader(train_data, batch_size=args.batch_size, shuffle=True,
 #from paper_2stn import Net
 #from paper_tund import Net
 from paper_groupy import Net
-model = Net(args.no_dp, p = args.p)
+model = Net(args.no_dp, p = args.p, optimized = args.optimized)
 device = torch.device('cuda:0')
 
 if args.load:
