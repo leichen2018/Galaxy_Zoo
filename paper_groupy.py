@@ -48,7 +48,9 @@ class Net(nn.Module):
         self.fc1 = nn.Linear(8192, 512)
         self.fc2 = nn.Linear(512, nclasses)
 
-        self.optimized_output = OptimisedDivGalaxyOutputLayer() 
+        self.optimized_output = OptimisedDivGalaxyOutputLayer()
+
+        self.op_loss = 0
 
         # Initilize the parameters
         '''
@@ -63,7 +65,8 @@ class Net(nn.Module):
                 m.bias.data.zero_()
         '''
 
-
+    def optimized_loss(self):
+        return self.op_loss
 
     def forward(self, x):
         #print(x.size())
@@ -88,8 +91,12 @@ class Net(nn.Module):
         #x = F.dropout(F.relu(self.fc2(x)), p=self.p, training=self.training)
         #x = F.relu(self.fc3(x))
         x = F.relu(self.fc2(x))
+
+        y = self.optimized_output.predictions(x)
+
+        self.op_loss = F.mse_loss(x,y)
        
         if self.optimized:
-            x = self.optimized_output.predictions(x)
+            x = y
         
         return x

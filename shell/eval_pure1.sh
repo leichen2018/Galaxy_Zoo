@@ -5,3 +5,4 @@ python3 ~/groupy/Galaxy_Zoo/eval.py  \
 --name ${MODEL}  \
 --load  models/${MODEL}/model_239*  \
 --optimized  \
+--rotate  \

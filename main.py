@@ -109,7 +109,12 @@ def train(epoch):
             target = target.reshape(-1, 37)
         
         output = model(data)
-        loss = F.mse_loss(output, target)
+
+        if epoch < 50:
+            loss = F.mse_loss(output, target)
+        else:
+            loss = F.mse_loss(output, target) + model.optimized_loss()
+
         loss.backward()
         optimizer.step()
         loss_total += float(loss.data[0])

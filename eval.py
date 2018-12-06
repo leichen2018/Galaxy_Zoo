@@ -36,8 +36,8 @@ else:
     transforms = val_transforms
 
 val_data = GalaxyZooDataset(train=False, transform=transforms)
-val_loader = DataLoader(val_data, batch_size=32, shuffle=False,
-                                  num_workers=8, pin_memory=True, collate_fn=val_data.collate)
+val_loader = DataLoader(val_data, batch_size=8, shuffle=False,
+                                  num_workers=2, pin_memory=True, collate_fn=val_data.collate)
 
 ### Neural Network and Optimizer
 # We define neural net in model.py so that it can be reused by the evaluate.py script
