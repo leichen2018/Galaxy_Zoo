@@ -91,12 +91,13 @@ class Net(nn.Module):
         #x = F.dropout(F.relu(self.fc2(x)), p=self.p, training=self.training)
         #x = F.relu(self.fc3(x))
         x = F.relu(self.fc2(x))
-
-        y = self.optimized_output.predictions(x)
+	
+        with torch.no_grad():
+            y = self.optimized_output.predictions(x)
 
         self.op_loss = F.mse_loss(x,y)
        
         if self.optimized:
-            x = y
+            x = self.optimized_output.predictions(x)
         
         return x

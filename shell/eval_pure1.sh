@@ -1,8 +1,6 @@
 set -x
-MODEL="groupy_op_2fc512_90degree_001lr_250ep_0.5dp_0.9moment"
+MODEL="groupy_loss_2fc512_90degree_001lr_250ep_0.5dp_0.9moment"
 
 python3 ~/groupy/Galaxy_Zoo/eval.py  \
 --name ${MODEL}  \
---load  models/${MODEL}/model_239*  \
---optimized  \
---rotate  \
+--load  models/${MODEL}/model_229*  \

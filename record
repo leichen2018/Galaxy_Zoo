@@ -22,6 +22,6 @@ groupy_2fc512_90degree_001lr_250ep_0.9moment_rotate 0.08202 add 3 rotated img of
 no change adding flip
 no change altering weight decay
 groupy_op_2fc512_90degree_001lr_250ep_0.5dp_0.9moment_nocrop 0.07855 add custom.py to optimizd
-groupy_op_2fc512_90degree_001lr_250ep_0.5dp_0.9moment_rotate ** add custom.py to optimizd, rotate to evaluate
-groupy_op_loss_2fc512_90degree_001lr_250ep_0.5dp_0.9moment ** add constraints loss to optimization
-groupu_loss_2fc512_90degree_001lr_250ep_0.5dp_0.9moment ** add constraints loss without optimization
+groupy_op_2fc512_90degree_001lr_250ep_0.5dp_0.9moment_rotate 0.07910 add custom.py to optimizd, rotate to evaluate
+groupy_op_loss_2fc512_90degree_001lr_250ep_0.5dp_0.9moment_nocrop 0.08181 add constraints loss to optimization
+groupu_loss_2fc512_90degree_001lr_250ep_0.5dp_0.9moment_nocrop 0.08256 add constraints loss without optimization

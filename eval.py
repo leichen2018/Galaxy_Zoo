@@ -22,7 +22,7 @@ args = parser.parse_args()
 print(args)
 
 ### Data Initialization and Loading
-from data import data_transforms, val_transforms_crop, val_transforms, constraints, val_transforms_rotate, data_transforms_rc # data.py in the same folder
+from data import data_transforms, val_transforms_crop, val_transforms, constraints, val_transforms_rotate, data_transforms_rc, val_transforms_rc # data.py in the same folder
 from galaxy import GalaxyZooDataset
 from torch.utils.data import DataLoader
 
@@ -31,7 +31,7 @@ if args.crop:
 elif args.rotate:
     transforms = val_transforms_rotate
 elif args.rc:
-    transforms = data_transforms_rc
+    transforms = val_transforms_rc
 else:
     transforms = val_transforms
 

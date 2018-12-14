@@ -9,6 +9,7 @@ from torch.autograd import Variable
 from datetime import datetime as dt
 import numpy as np
 import os
+import math
 
 # Training settings
 parser = argparse.ArgumentParser(description='PyTorch GTSRB example')
@@ -81,7 +82,7 @@ optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum, we
 if args.load:
     scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[30,60], gamma=0.2)
 elif args.rc:
-    scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[6,10,15], gamma=0.1)
+    scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[15, 25, 35], gamma=0.1)
 else:
     scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[100, 150, 200], gamma=0.1)
 
@@ -110,10 +111,7 @@ def train(epoch):
         
         output = model(data)
 
-        if epoch < 50:
-            loss = F.mse_loss(output, target)
-        else:
-            loss = F.mse_loss(output, target) + model.optimized_loss()
+        loss = F.mse_loss(output, target)
 
         loss.backward()
         optimizer.step()
@@ -123,11 +121,11 @@ def train(epoch):
         if batch_idx % args.log_interval == 0 and batch_idx != 0:
             print(dt.now(), 'Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f} '.format(
                 epoch, batch_idx * len(data), len(train_loader.dataset),
-                100. * batch_idx / len(train_loader), loss_step / (args.log_interval * len(data)) ))
+                100. * batch_idx / len(train_loader), loss_step / args.log_interval ))
             loss_step = 0
 
-    print("\nTraining MSE loss: ", loss_total * 1.0 / len(train_loader))
-    return loss_total * 1.0 / len(train_loader)       
+    print("\nTraining MSE loss: ", math.sqrt(loss_total * 1.0 / len(train_loader)))
+    return math.sqrt(loss_total * 1.0 / len(train_loader))       
 
 if args.load:
     os.mkdir("models/" + args.name + '_ft' + args.ftn)

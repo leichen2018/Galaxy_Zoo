@@ -61,7 +61,7 @@ class train_RotateCrop(object):
 data_transforms = transforms.Compose([
     transforms.CenterCrop(300),
     transforms.RandomAffine(degrees=90, translate=(0.1, 0.1), scale=(0.8, 1.25)),
-    transforms.RandomResizedCrop(200, scale=(0.9, 1.1), ratio=(0.67, 1.5)),
+    transforms.RandomResizedCrop(180, scale=(0.9, 1.1), ratio=(0.67, 1.5)),
     transforms.RandomHorizontalFlip(0.5),
     transforms.Scale(120),
     transforms.ColorJitter(0.1, 0.1, 0.1, 0.1),
@@ -71,9 +71,10 @@ data_transforms = transforms.Compose([
 ])
 
 data_transforms_rc = transforms.Compose([
-    transforms.ColorJitter(0.5, 0, 0, 0),
+    transforms.ColorJitter(0.1, 0.1, 0.1, 0.1),
     transforms.CenterCrop(300),
-    transforms.RandomAffine(degrees=0, translate=(0.1, 0.1), scale=(0.8, 1.25)),
+    transforms.RandomAffine(degrees=22, translate=(0.1, 0.1), scale=(0.8, 1.25)),
+    transforms.Scale(180),
     train_RotateCrop(120),
     
     transforms.Lambda(lambda crops: torch.stack(
@@ -92,6 +93,16 @@ val_transforms_crop = transforms.Compose([
     transforms.Scale(180),
     transforms.FiveCrop(120),
     transforms.Lambda(lambda crops: torch.stack([transforms.Normalize((0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))(transforms.ToTensor()(crop)) for crop in crops]))
+])
+
+val_transforms_rc = transforms.Compose([
+    transforms.CenterCrop(300),
+    transforms.Scale(180),
+    train_RotateCrop(120),
+
+    transforms.Lambda(lambda crops: torch.stack(
+        [transforms.Normalize((0.3337, 0.3064, 0.3171), (0.2672, 0.2564, 0.2629))(transforms.ToTensor()(crop)) for crop
+         in crops]))
 ])
 
 val_transforms = transforms.Compose([
