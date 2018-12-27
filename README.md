@@ -2,7 +2,7 @@
 
 Project of Computer Vision 2018 NYU course.
 
-I implemented GrouPy part of this project. The Resnet18 part of work is at:
+I mainly implemented GrouPy and Tund part of this project. Work done with Yu Cao:
 https://github.com/Yucao42/Galaxy_Zoo
 
 We achieve test score of 0.07520 with Resnet18 and 0.07746 with GrouPy. Averaged model achieved 0.07484, beyond SOTA performance of 0.07491.
