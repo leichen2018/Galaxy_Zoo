@@ -22,12 +22,12 @@ ________________________________________________________________________________
 
 If you would like to run the code, there is some path stuff to deal with before that:\
 `
-cd Galaxy_Zoo\
-mv src/* .\
-rm -rf outputs\
-mkdir outputs\
-rm -rf results\
-mkdir results
+cd Galaxy_Zoo  
+mv src/* .  
+rm -rf outputs  
+mkdir outputs  
+rm -rf results  
+mkdir results  
 `
 
 Environment requirements except `GrouPy` are included in `requirements.yaml`. `GrouPy`'s setup process is provided in the last link above.
@@ -36,12 +36,12 @@ Environment requirements except `GrouPy` are included in `requirements.yaml`. `G
 
 To run training module of our work, use `train*.sh` in `./shell`:\
 `
-source activate galaxy1           // activate conda env\
-bash train*.sh                    // pick the model with your expectation, and remember the MODEL setting\
+source activate galaxy1           // activate conda env  
+bash train*.sh                    // pick the model with your expectation, and remember the MODEL setting  
 `
 
 To run evaluation module, use `eval.sh` in `./shell`:\
 `
-source activate galaxy1\
-bash eval.sh                      // remember the MODEL setting corresponding to your training model\
+source activate galaxy1  
+bash eval.sh                      // remember the MODEL setting corresponding to your training model  
 `
