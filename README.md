@@ -22,7 +22,7 @@ ________________________________________________________________________________
 
 If you would like to run the code, there is some path stuff to deal with before that:\
 `
-cd Galaxy_Zoo  
+cd Galaxy_Zoo<br />
 mv src/* .  
 rm -rf outputs  
 mkdir outputs  
