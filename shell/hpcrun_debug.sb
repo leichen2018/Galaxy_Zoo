@@ -2,17 +2,18 @@
 #SBATCH --verbose
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=8
-#SBATCH --time=0:30:00
-#SBATCH --mem=16GB
-#SBATCH --job-name=test
+#SBATCH --time=00:30:00
+#SBATCH --mem=32GB
+#SBATCH --job-name=debug
 #SBATCH --mail-type=END
 #SBATCH --mail-user=lc3909nyu.edu
 #SBATCH --output=hpc_outputs/slurm_%j.out
 #SBATCH --error=hpc_outputs/slurm_%j.err 
+#SBATCH --partition=v100_sxm2_4,v100_pci_2,p100_4,p40_4
 #SBATCH --gres=gpu:1
 
 cd ~/groupy/Galaxy_Zoo
 module purge
 
 source ~/anaconda3/bin/activate galaxy1
-bash ~/groupy/Galaxy_Zoo/shell/train.sh
+bash ~/groupy/Galaxy_Zoo/shell/train_debug.sh

@@ -1,11 +1,12 @@
 set -x
-MODEL="resnet_try"
+MODEL="debug"
 
 mkdir -p models/${MODEL}
 #cp shell/train.sh models/${MODEL}/
 
 python3 ~/groupy/Galaxy_Zoo/main.py  \
 --name ${MODEL}  \
+--model test \
 --batch_size 64  \
 --step 14 \
 --epochs 10 \
