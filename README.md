@@ -20,16 +20,6 @@ ________________________________________________________________________________
 
 ### Before running code
 
-If you would like to run the code, there is some path stuff to deal with before that:
-```
-cd Galaxy_Zoo
-mv src/* .  
-rm -rf outputs  
-mkdir outputs  
-rm -rf results  
-mkdir results  
-```
-
 Environment requirements except `GrouPy` are included in `requirements.yaml`. `GrouPy`'s setup process is provided in the last link above.
 
 ### To run code
