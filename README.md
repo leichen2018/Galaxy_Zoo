@@ -5,7 +5,7 @@ Project of Computer Vision 2018 NYU course.
 I mainly implemented GrouPy and Tund part of this project. Work done with Yu Cao:
 https://github.com/Yucao42/Galaxy_Zoo
 
-We achieve test score of 0.07520 with Resnet18 and 0.07746 with GrouPy. Averaged model achieved 0.07484, beyond SOTA performance of 0.07491.
+We achieve test score of 0.07520 with Resnet18 and 0.07669 with GrouPy. Averaged model achieved 0.07484, beyond SOTA performance of 0.07491.
 
 The original kaggle challenage is at:
 https://www.kaggle.com/c/galaxy-zoo-the-galaxy-challenge/leaderboard
